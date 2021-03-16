@@ -48,12 +48,11 @@ namespace LoginPage
             //});
             services.AddCors(options =>
             {
-                options.AddPolicy("MyAllowAllHeadersPolicy",
-                                  builder =>
-                                  {
-                                      //builder.WithOrigins("*");
-                                      builder.AllowAnyHeader();
-                                  });
+                options.AddPolicy("CorsPolicy", builder => builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    .SetIsOriginAllowed((host) => true));
             });
 
             services.AddControllers();
@@ -72,7 +71,7 @@ namespace LoginPage
             app.UseRouting();
 
             //
-            app.UseCors();
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseAuthentication();
 
